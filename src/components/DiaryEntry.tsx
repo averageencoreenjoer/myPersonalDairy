@@ -49,24 +49,24 @@ const DiaryEntry: React.FC<DiaryEntryProps> = ({
   return (
     <Card className={cn(
       "border mb-4 transition-all duration-200 animate-fade-in shadow hover:shadow-md",
-      entry.completed ? "bg-muted/30 border-muted" : "bg-white border-diary-light"
+      entry.completed ? "bg-gray-100 border-gray-200" : "bg-white border-gray-300"
     )}>
       <CardContent className="pt-6">
         {!isEditing ? (
           <>
             <div className="flex justify-between items-center mb-2">
-              <p className="text-sm text-muted-foreground">
+              <p className="text-sm text-gray-500">
                 {formatDate(entry.date)}
               </p>
               {entry.completed && (
-                <Badge variant="outline" className="bg-diary/10 text-diary-dark border-diary-light">
+                <Badge variant="outline" className="bg-black/5 text-black border-gray-200">
                   Completed
                 </Badge>
               )}
             </div>
             <p className={cn(
               "whitespace-pre-wrap",
-              entry.completed && "text-muted-foreground"
+              entry.completed && "text-gray-500"
             )}>
               {entry.content}
             </p>
@@ -75,11 +75,11 @@ const DiaryEntry: React.FC<DiaryEntryProps> = ({
           <Textarea
             value={editedContent}
             onChange={(e) => setEditedContent(e.target.value)}
-            className="min-h-[100px] focus:border-diary focus:ring-diary"
+            className="min-h-[100px] focus:border-black focus:ring-black"
           />
         )}
       </CardContent>
-      <CardFooter className="border-t bg-muted/10 px-6 py-3 flex justify-end gap-2">
+      <CardFooter className="border-t bg-gray-50 px-6 py-3 flex justify-end gap-2">
         {isEditing ? (
           <>
             <Button 
@@ -93,7 +93,7 @@ const DiaryEntry: React.FC<DiaryEntryProps> = ({
             </Button>
             <Button 
               onClick={handleSaveEdit}
-              className="bg-diary hover:bg-diary-dark"
+              className="bg-black hover:bg-gray-800"
             >
               Save
             </Button>
@@ -104,7 +104,7 @@ const DiaryEntry: React.FC<DiaryEntryProps> = ({
               variant={entry.completed ? "default" : "outline"}
               size="icon"
               onClick={() => onToggleComplete(entry.id)}
-              className={entry.completed ? "bg-diary hover:bg-diary-dark" : ""}
+              className={entry.completed ? "bg-black hover:bg-gray-800" : ""}
               title={entry.completed ? "Mark as incomplete" : "Mark as completed"}
             >
               <Check className="h-4 w-4" />
@@ -122,7 +122,7 @@ const DiaryEntry: React.FC<DiaryEntryProps> = ({
               variant="outline"
               size="icon"
               onClick={() => onDelete(entry.id)}
-              className="text-destructive hover:bg-destructive/10 hover:text-destructive"
+              className="text-red-500 hover:bg-red-50 hover:text-red-600"
               title="Delete entry"
             >
               <Trash className="h-4 w-4" />

@@ -1,29 +1,24 @@
 
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import DiaryEntryForm from '@/components/DiaryEntryForm';
 import DiaryEntry, { DiaryEntryType } from '@/components/DiaryEntry';
 import { Separator } from '@/components/ui/separator';
 import { useToast } from '@/components/ui/use-toast';
 import { v4 as uuidv4 } from 'uuid';
 
-const Index = () => {
-  const [entries, setEntries] = useState<DiaryEntryType[]>(() => {
-    const savedEntries = localStorage.getItem('diaryEntries');
-    if (savedEntries) {
-      const parsed = JSON.parse(savedEntries);
-      return parsed.map((entry: any) => ({
-        ...entry,
-        date: new Date(entry.date)
-      }));
-    }
-    return [];
-  });
-  
-  const { toast } = useToast();
+// Sample initial data (in-memory store)
+const initialEntries: DiaryEntryType[] = [
+  {
+    id: "1",
+    content: "Today I started using this diary app. It's quite nice with its black and white design.",
+    date: new Date(),
+    completed: false
+  }
+];
 
-  useEffect(() => {
-    localStorage.setItem('diaryEntries', JSON.stringify(entries));
-  }, [entries]);
+const Index = () => {
+  const [entries, setEntries] = useState<DiaryEntryType[]>(initialEntries);
+  const { toast } = useToast();
 
   const handleAddEntry = (content: string) => {
     const newEntry: DiaryEntryType = {
@@ -67,13 +62,13 @@ const Index = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-white to-diary-light/30">
+    <div className="min-h-screen bg-white">
       <div className="container px-4 py-8 max-w-3xl mx-auto">
         <header className="mb-8 text-center">
-          <h1 className="text-4xl font-bold bg-gradient-to-r from-diary-dark to-diary bg-clip-text text-transparent">
+          <h1 className="text-4xl font-bold text-black">
             My Personal Diary
           </h1>
-          <p className="text-muted-foreground mt-2">
+          <p className="text-gray-600 mt-2">
             Record your thoughts, reflections, and experiences
           </p>
         </header>
@@ -82,16 +77,16 @@ const Index = () => {
           <DiaryEntryForm onAddEntry={handleAddEntry} />
         </section>
 
-        <Separator className="my-8 bg-diary-light/50" />
+        <Separator className="my-8 bg-gray-200" />
 
         <section>
-          <h2 className="text-2xl font-semibold mb-6 text-diary-dark">
+          <h2 className="text-2xl font-semibold mb-6 text-black">
             Your Entries
           </h2>
           
           {entries.length === 0 ? (
-            <div className="text-center py-12 bg-muted/20 rounded-lg border border-dashed">
-              <p className="text-muted-foreground">No entries yet. Start writing your first diary entry above!</p>
+            <div className="text-center py-12 bg-gray-50 rounded-lg border border-dashed border-gray-300">
+              <p className="text-gray-500">No entries yet. Start writing your first diary entry above!</p>
             </div>
           ) : (
             <div className="space-y-6">

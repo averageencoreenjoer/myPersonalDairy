@@ -64,9 +64,9 @@ export default {
 					ring: 'hsl(var(--sidebar-ring))'
 				},
 				diary: {
-					light: '#E5DEFF',
-					DEFAULT: '#9b87f5',
-					dark: '#7E69AB'
+					light: '#E5E5E5', // Changed to light gray
+					DEFAULT: '#333333', // Changed to dark gray
+					dark: '#000000'     // Changed to black
 				}
 			},
 			borderRadius: {
