@@ -17,14 +17,14 @@ This project is a full-featured web application for keeping a personal diary wit
 - **Asynchronous architecture** - All database operations are performed asynchronously
 - **RESTful API** - Clear separation of endpoints by resources
 - **Layered architecture**:
-- Routing (FastAPI endpoints)
-- Business logic (CRUD operations)
-- Data models (Pydantic)
-- Data access (Asyncpg)
+  - Routing (FastAPI endpoints)
+  - Business logic (CRUD operations)
+  - Data models (Pydantic)
+  - Data access (Asyncpg)
 - **Reliable error handling**:
-- Custom HTTP exceptions
-- Input data validation
-- DB error handling
+  - Custom HTTP exceptions
+  - Input data validation
+  - DB error handling
 
 ### Implementation Features
 1. **Asynchronous DB interaction**
