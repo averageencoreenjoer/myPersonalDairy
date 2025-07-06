@@ -1,72 +1,105 @@
-
-import React, { useState } from 'react';
+import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import { Textarea } from "@/components/ui/textarea";
 import { Check, Pencil, Trash } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
-
-export interface DiaryEntryType {
-  id: string;
-  content: string;
-  date: Date;
-  completed: boolean;
-}
+import { useToast } from "@/components/ui/use-toast";
+import type { DiaryEntryType } from '@/lib/api';
 
 interface DiaryEntryProps {
   entry: DiaryEntryType;
-  onDelete: (id: string) => void;
-  onEdit: (id: string, content: string) => void;
-  onToggleComplete: (id: string) => void;
+  onDelete: (id: number) => void;
+  onEdit: (id: number, content: string) => void;
+  onToggleComplete: (id: number) => void;
 }
 
 const DiaryEntry: React.FC<DiaryEntryProps> = ({
   entry,
   onDelete,
   onEdit,
-  onToggleComplete,
+  onToggleComplete
 }) => {
   const [isEditing, setIsEditing] = useState(false);
   const [editedContent, setEditedContent] = useState(entry.content);
+  const { toast } = useToast();
 
-  const handleSaveEdit = () => {
-    onEdit(entry.id, editedContent);
-    setIsEditing(false);
+  const handleSaveEdit = async () => {
+    try {
+      // Передаем только id и content, status будет взят из текущей записи
+      await onEdit(entry.id, editedContent);
+      setIsEditing(false);
+      toast({ title: "Entry updated" });
+    } catch (error) {
+      toast({
+        title: "Error updating entry",
+        description: String(error),
+        variant: "destructive"
+      });
+    }
   };
 
-  const formatDate = (date: Date) => {
-    return new Intl.DateTimeFormat('en-US', {
-      weekday: 'long',
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric',
-      hour: '2-digit',
-      minute: '2-digit'
+  const handleToggleComplete = async () => {
+    try {
+      await onToggleComplete(entry.id);
+    } catch (error) {
+      toast({
+        title: "Error toggling completion",
+        description: String(error),
+        variant: "destructive"
+      });
+    }
+  };
+
+  const handleDelete = async () => {
+    try {
+      await onDelete(entry.id);
+    } catch (error) {
+      toast({
+        title: "Error deleting entry",
+        description: String(error),
+        variant: "destructive"
+      });
+    }
+  };
+
+  const formatDate = (dateString: string) => {
+    const date = new Date(dateString);
+    return new Intl.DateTimeFormat("en-US", {
+      weekday: "long",
+      year: "numeric",
+      month: "long",
+      day: "numeric",
     }).format(date);
   };
 
   return (
-    <Card className={cn(
-      "border mb-4 transition-all duration-200 animate-fade-in shadow hover:shadow-md",
-      entry.completed ? "bg-gray-100 border-gray-200" : "bg-white border-gray-300"
-    )}>
+    <Card
+      className={cn(
+        "border mb-4 transition-all duration-200 animate-fade-in shadow hover:shadow-md",
+        entry.status === "completed" ? "bg-gray-100 border-gray-200" : "bg-white border-gray-300"
+      )}
+    >
       <CardContent className="pt-6">
         {!isEditing ? (
           <>
             <div className="flex justify-between items-center mb-2">
               <p className="text-sm text-gray-500">
-                {formatDate(entry.date)}
+                {formatDate(entry.created_at)}
               </p>
-              {entry.completed && (
-                <Badge variant="outline" className="bg-black/5 text-black border-gray-200">
+              {entry.status === "completed" && (
+                <Badge
+                  variant="outline"
+                  className="bg-green-100 text-green-800 border-green-200"
+                >
                   Completed
                 </Badge>
               )}
             </div>
             <p className={cn(
               "whitespace-pre-wrap",
-              entry.completed && "text-gray-500"
+              entry.status === "completed" && "text-gray-500"
             )}>
               {entry.content}
             </p>
@@ -82,8 +115,8 @@ const DiaryEntry: React.FC<DiaryEntryProps> = ({
       <CardFooter className="border-t bg-gray-50 px-6 py-3 flex justify-end gap-2">
         {isEditing ? (
           <>
-            <Button 
-              variant="outline" 
+            <Button
+              variant="outline"
               onClick={() => {
                 setIsEditing(false);
                 setEditedContent(entry.content);
@@ -91,21 +124,18 @@ const DiaryEntry: React.FC<DiaryEntryProps> = ({
             >
               Cancel
             </Button>
-            <Button 
-              onClick={handleSaveEdit}
-              className="bg-black hover:bg-gray-800"
-            >
+            <Button onClick={handleSaveEdit} className="bg-black hover:bg-gray-800">
               Save
             </Button>
           </>
         ) : (
           <>
             <Button
-              variant={entry.completed ? "default" : "outline"}
+              variant={entry.status === "completed" ? "default" : "outline"}
               size="icon"
-              onClick={() => onToggleComplete(entry.id)}
-              className={entry.completed ? "bg-black hover:bg-gray-800" : ""}
-              title={entry.completed ? "Mark as incomplete" : "Mark as completed"}
+              onClick={handleToggleComplete}
+              className={entry.status === "completed" ? "bg-green-600 hover:bg-green-700" : ""}
+              title={entry.status === "completed" ? "Mark as incomplete" : "Mark as completed"}
             >
               <Check className="h-4 w-4" />
             </Button>
@@ -113,7 +143,7 @@ const DiaryEntry: React.FC<DiaryEntryProps> = ({
               variant="outline"
               size="icon"
               onClick={() => setIsEditing(true)}
-              disabled={entry.completed}
+              disabled={entry.status === "completed"}
               title="Edit entry"
             >
               <Pencil className="h-4 w-4" />
@@ -121,7 +151,7 @@ const DiaryEntry: React.FC<DiaryEntryProps> = ({
             <Button
               variant="outline"
               size="icon"
-              onClick={() => onDelete(entry.id)}
+              onClick={handleDelete}
               className="text-red-500 hover:bg-red-50 hover:text-red-600"
               title="Delete entry"
             >
