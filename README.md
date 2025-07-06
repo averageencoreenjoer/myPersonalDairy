@@ -28,24 +28,24 @@ This project is a full-featured web application for keeping a personal diary wit
 
 ### Implementation Features
 1. **Asynchronous DB interaction**
-- Using asyncpg for efficient connection management
-- Asynchronous context managers for connection management
-- Connection pool for performance optimization
+  - Using asyncpg for efficient connection management
+  - Asynchronous context managers for connection management
+  - Connection pool for performance optimization
 
 2. **Security and validation**
-- Strict input validation with Pydantic
-- Automatic generation of OpenAPI documentation
-- SQL injection protection via parameterized queries
+  - Strict input validation with Pydantic
+  - Automatic generation of OpenAPI documentation
+  - SQL injection protection via parameterized queries
 
 3. **Efficient data handling**
-- Optimized SQL queries for CRUD operations
-- Support for filtering by status when retrieving records
-- Smart default values ​​(creation date)
+  - Optimized SQL queries for CRUD operations
+  - Support for filtering by status when retrieving records
+  - Smart default values ​​(creation date)
 
 4. **Reliability**
-- Checking the DB connection when starting the application
-- Handling unique violations and other DB errors
-- Comprehensive tests for all use cases
+  - Checking the DB connection when starting the application
+  - Handling unique violations and other DB errors
+  - Comprehensive tests for all use cases
 
 ## API Endpoints
 
@@ -176,20 +176,20 @@ The frontend will be available at: `http://localhost:8080`
 ## Possible improvements
 
 1. **Authentication and authorization**
-- Add JWT authentication
-- Implement division of records by users
+  - Add JWT authentication
+  - Implement division of records by users
 
 2. **Additional functions**
-- Search by record content
-- Pagination of results
-- Tags and categories for records
+  - Search by record content
+  - Pagination of results
+  - Tags and categories for records
 
 3. **Performance optimization**
-- Caching of frequently requested data
-- Implementation of rate limiting
-- Optimization of complex queries
+  - Caching of frequently requested data
+  - Implementation of rate limiting
+  - Optimization of complex queries
 
 4. **Deployment**
-- Docker containerization of the application
-- Configuration for cloud deployment
-- Setting up a CI/CD pipeline
+  - Docker containerization of the application
+  - Configuration for cloud deployment
+  - Setting up a CI/CD pipeline
