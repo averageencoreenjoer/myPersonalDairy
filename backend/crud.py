@@ -1,5 +1,3 @@
-# crud.py
-
 from models import NoteCreate, NoteBase
 
 async def create_note(conn, note: NoteCreate):
