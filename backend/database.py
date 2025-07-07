@@ -1,4 +1,3 @@
-#database.py
 import os
 import asyncpg
 from dotenv import load_dotenv
@@ -21,4 +20,4 @@ async def get_db() -> AsyncGenerator[asyncpg.Connection, None]:
 async def check_db_connection():
     async for conn in get_db():
         await conn.execute("SELECT 1")
-        break  # выходим после первой итерации (т.е. одного соединения)
+        break  
