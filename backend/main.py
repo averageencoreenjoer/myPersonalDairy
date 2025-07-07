@@ -1,4 +1,3 @@
-#main.py
 from fastapi import FastAPI, Depends, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from database import get_db, check_db_connection
